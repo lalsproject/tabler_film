@@ -1,5 +1,5 @@
-.card-body::before{
-  filter: blur(10) !important;
+.card-body::after{
+  filter: blur(100) !important;
 }
 .card-title{
   font-size: 1.25rem;
