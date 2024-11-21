@@ -37,6 +37,10 @@ const serverList = {
   },
 };
 
+const searchParams = new URLSearchParams(window.location.search);
+// console.log();
+
+
 const numServer = Object.keys(serverList).length;
 
 // Initialize genre map
@@ -65,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
   localStorage.setItem("data-bs-theme", localStorage.getItem("data-bs-theme"));
   $('#bodyId').attr('data-bs-theme',localStorage.getItem("data-bs-theme"));
   fetchGenres().then(() => {
-    fetchMovies();
+    fetchMovies(searchParams.get('genre'));
     updatePagination();
   });
 
@@ -91,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       if (currentPage > 1) {
         currentPage--;
-        fetchMovies();
+        fetchMovies(searchParams.get('genre'));
         updatePagination();
       }
     }
@@ -108,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       if (currentPage < totalPages) {
         currentPage++;
-        fetchMovies();
+        fetchMovies(searchParams.get('genre'));
         updatePagination();
       }
     }
@@ -120,19 +124,43 @@ function fetchGenres() {
   return fetch("https://api.themoviedb.org/3/genre/movie/list", options)
     .then((res) => res.json())
     .then((data) => {
+      let genreView = `
+      <div class="col-sm-12 mb-2" >
+      <select name="genreSelect" id="genreSelect" class="form-select" onchange="window.location='?genre='+$(this).val()">
+      <option value="">All</option>
+      `;
       data.genres.forEach((genre) => {
+        if (genre.id == searchParams.get('genre')) {
+          genreView += `
+          <option value="${genre.id}" selected>${genre.name}</option>
+          `;
+          $('#genTitle').html(`Streaming Film | ${genre.name}`);
+        }else{
+
+          genreView += `
+          <option value="${genre.id}">${genre.name}</option>
+          `;
+        }
         genreMap.set(genre.id, genre.name);
       });
+      genreView += `</select></div>`;
+      $('#genreList').html(genreView);
     })
     .catch((err) => console.error("Error fetching genres:", err));
 }
 
 // Fetch popular movies
-function fetchMovies() {
+function fetchMovies(genre='') {
   showLoadingPlaceholder();
+  let url;
+  if(genre != ''){
+    url = `https://api.themoviedb.org/3/discover/movie?page=${currentPage}&with_genres=${genre}`;
+  }else{
+    url = `https://api.themoviedb.org/3/discover/movie?page=${currentPage}`;
+    $('#genTitle').html(`Streaming Film | All`);
+  }
   fetch(
-    `
-    https://api.themoviedb.org/3/discover/movie?page=${currentPage}`,
+    url,
     options
   )
     .then((res) => res.json())
