@@ -38,7 +38,10 @@ const serverList = {
 };
 
 const searchParams = new URLSearchParams(window.location.search);
-// console.log();
+console.log(searchParams.get('genre'))
+if(searchParams.get('genre') == null){
+  window.location = '?genre=';
+}
 
 
 const numServer = Object.keys(serverList).length;
