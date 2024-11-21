@@ -131,7 +131,8 @@ function fetchGenres() {
 function fetchMovies() {
   showLoadingPlaceholder();
   fetch(
-    `https://api.themoviedb.org/3/movie/popular?page=${currentPage}`,
+    `
+    https://api.themoviedb.org/3/discover/movie?page=${currentPage}`,
     options
   )
     .then((res) => res.json())
