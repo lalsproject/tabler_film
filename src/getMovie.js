@@ -1,4 +1,4 @@
-$('#bodyId').attr('data-bs-theme',localStorage.getItem("data-bs-theme"));
+
 const serverList = {
   1: {
     name: "Vidsrc To",
@@ -37,6 +37,8 @@ const serverList = {
 const numServer = Object.keys(serverList).length;
 
 document.addEventListener("DOMContentLoaded", () => {
+  localStorage.setItem("data-bs-theme", localStorage.getItem("data-bs-theme"));
+  $('#bodyId').attr('data-bs-theme',localStorage.getItem("data-bs-theme"));
   const options = {
     method: "GET",
     headers: {
