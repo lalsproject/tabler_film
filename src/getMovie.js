@@ -1,3 +1,4 @@
+$('#bodyId').attr('data-bs-theme',localStorage.getItem("data-bs-theme"));
 const serverList = {
   1: {
     name: "Vidsrc To",
@@ -114,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
           view += `
             <div class="col-sm-6 col-lg-3">
               <div class="card">
-                <div class="card-body" style="background: linear-gradient(to bottom, transparent, #000000), url(${image}); background-repeat:no-repeat; background-size:cover;">
+                <div class="card-body" style="border-radius:5px;background: linear-gradient(to bottom, transparent, var(--tblr-body-bg)), url(${backdrop});background-repeat:no-repeat;background-size:cover;">
                   <img src="${image}" style="margin-bottom:10px; border-radius:5px;">
                   <div>
                     <h3 class="card-title">${title}</h3>
@@ -126,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <p>${overview}</p>
                   </div>
                 </div>
-                <div class="card-footer" style="background: #000000; border-color: #000000;">
+                <div class="card-footer" style="background: var(--tblr-body-bg); border-color: var(--tblr-body-bg);">
                   <div class="row">`;
           for (let i = 1; i <= numServer; i++) {
             view += `
