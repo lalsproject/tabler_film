@@ -214,6 +214,7 @@ function displayMovies(movies) {
   });
   hideLoadingPlaceholder();
   $("#viewFilm").html(view);
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 // Update pagination buttons for popular movies
