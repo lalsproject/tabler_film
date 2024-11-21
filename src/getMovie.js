@@ -36,7 +36,7 @@ const serverList = {
 const numServer = Object.keys(serverList).length;
 
 // Initialize genre map
-let genreMap = new Map(); 
+let genreMap = new Map();
 
 // Pagination state
 let currentPage = 1;
@@ -58,6 +58,8 @@ const options = {
 
 // Load genres when page loads
 document.addEventListener("DOMContentLoaded", () => {
+  localStorage.setItem("data-bs-theme", localStorage.getItem("data-bs-theme"));
+  $('#bodyId').attr('data-bs-theme',localStorage.getItem("data-bs-theme"));
   fetchGenres().then(() => {
     fetchMovies();
     updatePagination();
@@ -124,7 +126,10 @@ function fetchGenres() {
 // Fetch popular movies
 function fetchMovies() {
   showLoadingPlaceholder();
-  fetch(`https://api.themoviedb.org/3/movie/popular?page=${currentPage}`, options)
+  fetch(
+    `https://api.themoviedb.org/3/movie/popular?page=${currentPage}`,
+    options
+  )
     .then((res) => res.json())
     .then((res) => {
       displayMovies(res.results);
@@ -140,7 +145,12 @@ function fetchMovies() {
 // Fetch searched movies
 function fetchSearchMovies(query, page) {
   showLoadingPlaceholder();
-  fetch(`https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}&page=${page}`, options)
+  fetch(
+    `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(
+      query
+    )}&page=${page}`,
+    options
+  )
     .then((res) => res.json())
     .then((res) => {
       displayMovies(res.results);
@@ -170,6 +180,7 @@ function displayMovies(movies) {
       .join(" ");
 
     view += `
+      
       <div class="col-sm-6 col-lg-3">
         <div class="card">
           <div class="card-body" style="border-radius:5px;background: linear-gradient(to bottom, transparent, var(--tblr-body-bg)), url(${backdrop});background-repeat:no-repeat;background-size:cover;">
@@ -220,7 +231,10 @@ function updateSearchPagination() {
   const nextButton = document.getElementById("nextPage").parentElement;
 
   prevButton.classList.toggle("disabled", searchCurrentPage <= 1);
-  nextButton.classList.toggle("disabled", searchCurrentPage >= searchTotalPages);
+  nextButton.classList.toggle(
+    "disabled",
+    searchCurrentPage >= searchTotalPages
+  );
 }
 
 // Show movie in iframe popup
@@ -229,7 +243,7 @@ function showMovie(idMovie, serverId) {
     Fancybox.show([
       {
         type: "iframe",
-        src: `${serverList[serverId]['url']}${idMovie}`,
+        src: `${serverList[serverId]["url"]}${idMovie}`,
       },
     ]);
     $(".is-close-btn").remove();
