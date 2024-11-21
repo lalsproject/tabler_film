@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
           // Generate genre badges
           let genres = movie.genre_ids
             .map((id) => genreMap.get(id))
-            .map((genre) => `<span class="badge bg-red-lt">${genre}</span>`)
+            .map((genre) => `<span class="badge bg-red-lt mb-1">${genre}</span>`)
             .join(" ");
 
           view += `
