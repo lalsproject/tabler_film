@@ -1,7 +1,36 @@
 const serverList = {
-  1: "https://vidsrc.to/embed/movie/",
-  2: "https://vidsrc.xyz/embed/movie/",
-  3: "https://vidlink.pro/movie/",
+  1: {
+    name: "Vidsrc To",
+    url: "https://vidsrc.to/embed/movie/",
+  },
+  2: {
+    name: "Vidsrc Xyz",
+    url: "https://vidsrc.xyz/embed/movie/",
+  },
+  3: {
+    name: "Vidlink",
+    url: "https://vidlink.pro/movie/",
+  },
+  4: {
+    name: "Autoembed",
+    url: "https://autoembed.co/movie/tmdb/",
+  },
+  5: {
+    name: "Vidbinge",
+    url: "https://player.vidbinge.com/media/tmdb-movie-",
+  },
+  6: {
+    name: "Vidsrc VIP",
+    url: "https://vidsrc.vip/embed/movie/",
+  },
+  7: {
+    name: "Smashy",
+    url: "https://player.smashy.stream/movie/",
+  },
+  8: {
+    name: "Vidsrc CC",
+    url: "https://vidsrc.cc/v3/embed/movie/",
+  },
 };
 
 const numServer = Object.keys(serverList).length;
@@ -103,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
             view += `
               <div class="col-sm-4 col-sm-6 mb-2">
               <a href="javascript:void(0)" onclick="showMovie('${movie.id}','${i}')" class="btn btn-youtube w-100 btn-icon">
-              <i class="ti ti-player-play"></i><span>&#160;Server ${i}</span>
+              <i class="ti ti-player-play"></i><span>&#160;${serverList[i].name}</span>
               </a>
               </div>`;
           }
@@ -168,9 +197,9 @@ function showMovie(idMovie, serverId) {
     Fancybox.show([
       {
         type: "iframe",
-        src: `${serverList[serverId]}${idMovie}`,
+        src: `${serverList[serverId]['url']}${idMovie}`,
       },
     ]);
-    $('.is-close-btn').remove();
+    $(".is-close-btn").remove();
   }
 }
