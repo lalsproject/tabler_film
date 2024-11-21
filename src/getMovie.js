@@ -31,6 +31,10 @@ const serverList = {
     name: "Vidsrc CC",
     url: "https://vidsrc.cc/v3/embed/movie/",
   },
+  9: {
+    name: "Prime Wire",
+    url: "https://www.primewire.tf/embed/movie?tmdb=",
+  },
 };
 
 const numServer = Object.keys(serverList).length;
