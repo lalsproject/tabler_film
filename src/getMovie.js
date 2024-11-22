@@ -38,9 +38,10 @@ const serverList = {
 };
 
 const searchParams = new URLSearchParams(window.location.search);
-console.log(searchParams.get('genre'))
 if(searchParams.get('genre') == null){
   window.location = '?genre=';
+}else{
+  $('#searchDiv').remove();
 }
 
 
@@ -81,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
     searchQuery = document.getElementById("searchQuery").value.trim();
     if (searchQuery) {
       searchCurrentPage = 1;
-      fetchSearchMovies(searchQuery, searchCurrentPage);
+      fetchSearchMovies(searchQuery, searchCurrentPage,searchParams.get('genre'));
       updateSearchPagination();
     }
   });
@@ -92,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (searchQuery) {
       if (searchCurrentPage > 1) {
         searchCurrentPage--;
-        fetchSearchMovies(searchQuery, searchCurrentPage);
+        fetchSearchMovies(searchQuery, searchCurrentPage,searchParams.get('genre'));
         updateSearchPagination();
       }
     } else {
@@ -109,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (searchQuery) {
       if (searchCurrentPage < searchTotalPages) {
         searchCurrentPage++;
-        fetchSearchMovies(searchQuery, searchCurrentPage);
+        fetchSearchMovies(searchQuery, searchCurrentPage,searchParams.get('genre'));
         updateSearchPagination();
       }
     } else {
@@ -127,26 +128,25 @@ function fetchGenres() {
   return fetch("https://api.themoviedb.org/3/genre/movie/list", options)
     .then((res) => res.json())
     .then((data) => {
-      let genreView = `
-      <div class="col-sm-12 mb-2" >
-      <select name="genreSelect" id="genreSelect" class="form-select" onchange="window.location='?genre='+$(this).val()">
-      <option value="">All</option>
-      `;
+      let genreView = ``;
       data.genres.forEach((genre) => {
         if (genre.id == searchParams.get('genre')) {
           genreView += `
-          <option value="${genre.id}" selected>${genre.name}</option>
-          `;
+          <a class="dropdown-item active" href="javascript:void(0)" onclick="window.location='?genre=${genre.id}'">
+          ${genre.name}
+          </a>`;
           $('#genTitle').html(`Streaming Film | ${genre.name}`);
+          $('#pageTitle').html(`Streaming Film | ${genre.name}`);
         }else{
 
           genreView += `
-          <option value="${genre.id}">${genre.name}</option>
+          <a class="dropdown-item" href="javascript:void(0)" onclick="window.location='?genre=${genre.id}'">
+          ${genre.name}
+          </a>
           `;
         }
         genreMap.set(genre.id, genre.name);
       });
-      genreView += `</select></div>`;
       $('#genreList').html(genreView);
     })
     .catch((err) => console.error("Error fetching genres:", err));
@@ -179,12 +179,21 @@ function fetchMovies(genre='') {
 }
 
 // Fetch searched movies
-function fetchSearchMovies(query, page) {
+function fetchSearchMovies(query, page,genre='') {
   showLoadingPlaceholder();
-  fetch(
-    `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(
+  let url;
+  if(genre != ''){
+    url = `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(
       query
-    )}&page=${page}`,
+    )}&page=${page}&with_genres=${genre}`;
+  }else{
+    url = `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(
+      query
+    )}&page=${page}`;
+    $('#genTitle').html(`Streaming Film | All`);
+  }
+  fetch(
+    url,
     options
   )
     .then((res) => res.json())
