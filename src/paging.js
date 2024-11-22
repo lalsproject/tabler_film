@@ -5,5 +5,7 @@ $(document).ready(function () {
     }else if(searchParams.get('genre') == ''){
     }else{
       $('#searchDiv').remove();
-    }   
+    }
+
+    
 });
