@@ -6,6 +6,4 @@ $(document).ready(function () {
     }else{
       $('#searchDiv').remove();
     }
-
-    
 });
